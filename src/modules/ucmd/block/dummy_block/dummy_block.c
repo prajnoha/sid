@@ -45,6 +45,11 @@ SID_UCMD_MOD_RESET(_dummy_block_reset)
 static int _dummy_block_scan_a_init(sid_res_t *mod_res, struct sid_ucmd_ctx *ucmd_ctx)
 {
 	sid_res_log_debug(mod_res, "scan-a-init");
+
+	sid_ucmd_dev_add_alias(mod_res, ucmd_ctx, "name", "abc");
+	if (!strcmp(sid_ucmd_ev_get_dev_name(ucmd_ctx), "sdc"))
+		sid_ucmd_dev_rename_alias(mod_res, ucmd_ctx, "name", "abc", "def");
+
 	return 0;
 }
 SID_UCMD_SCAN_A_INIT(_dummy_block_scan_a_init)
