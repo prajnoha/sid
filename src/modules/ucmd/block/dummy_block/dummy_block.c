@@ -6,6 +6,8 @@
 
 #include "resource/ucmd-mod.h"
 
+#include <stdlib.h>
+
 SID_UCMD_MOD_PRIO(1)
 
 static int _dummy_block_init(sid_res_t *mod_res, struct sid_ucmd_common_ctx *ucmd_common_ctx)
@@ -38,7 +40,30 @@ SID_UCMD_SCAN_A_INIT(_dummy_block_scan_a_init)
 
 static int _dummy_block_scan_pre(sid_res_t *mod_res, struct sid_ucmd_ctx *ucmd_ctx)
 {
+	const char **stack;
+	size_t       count;
+	int          r;
+
 	sid_res_log_debug(mod_res, "scan-pre");
+
+	stack = sid_ucmd_dev_stack_va_get(mod_res, ucmd_ctx, .method = SID_DEV_SEARCH_IMM_ANC, .count = &count, .ret_code = &r);
+	free((void *) stack);
+
+	stack = sid_ucmd_dev_stack_va_get(mod_res, ucmd_ctx, .method = SID_DEV_SEARCH_ANC, .count = &count, .ret_code = &r);
+	free((void *) stack);
+
+	stack = sid_ucmd_dev_stack_va_get(mod_res, ucmd_ctx, .method = SID_DEV_SEARCH_BASE, .count = &count, .ret_code = &r);
+	free((void *) stack);
+
+	stack = sid_ucmd_dev_stack_va_get(mod_res, ucmd_ctx, .method = SID_DEV_SEARCH_IMM_DESC, .count = &count, .ret_code = &r);
+	free((void *) stack);
+
+	stack = sid_ucmd_dev_stack_va_get(mod_res, ucmd_ctx, .method = SID_DEV_SEARCH_DESC, .count = &count, .ret_code = &r);
+	free((void *) stack);
+
+	stack = sid_ucmd_dev_stack_va_get(mod_res, ucmd_ctx, .method = SID_DEV_SEARCH_TOP, .count = &count, .ret_code = &r);
+	free((void *) stack);
+
 	return 0;
 }
 SID_UCMD_SCAN_PRE(_dummy_block_scan_pre)
